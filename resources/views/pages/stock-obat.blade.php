@@ -30,57 +30,97 @@
     </div><!-- End Page Title -->
 
         <button type="button" class="btn b-prnt">
-            <i class="bi bi-printer i-prnt"></i>
-            <span class="t-prnt">Print</span>
+            <i class="bi bi-plus-circle-fill"></i>
+            <span class="t-prnt">Create</span>
         </button>
 
-        <button type="button" class="btn b-prnt">
-            <i class="bi bi-printer i-prnt"></i>
-            <span class="t-prnt">Print</span>
-        </button>
+        <input class="form-control int-lbl mt-3" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." style="width: 50%">
+        <datalist id="datalistOptions">
+            <option value="San Francisco">
+            <option value="New York">
+            <option value="Seattle">
+            <option value="Los Angeles">
+            <option value="Chicago">
+        </datalist>
 
-        <table class="table table-striped" style="width: 100%">
-            <thead>
-                <tr>
-                    <th scope="col" style="width: 5%">
-                        <div class="form-check">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="flexCheckDisable" disabled>
-                        </div>
-                    </th>
-                    <th scope="col" style="width: 30%">Nama Obat</th>
-                    <th scope="col" style="width: 20%">Stok Obat</th>
-                    <th scope="col" style="width: 20%">Dibawah Pengawasan</th>
-                    <th scope="col" style="width: 20%">Klasifikasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $d)
-                <tr>
-                    <td>
-                        <div class="form-check">
-                            <input class="form-check-input mx-auto" type="checkbox" value="" id="flexCheckDefault">
-                        </div>
-                    </td>
-                        <td>
-                            <a href="/detail-pasien-{{ $d->slug }}" class="psn_dtl">
-                                {{ $d->name }}
-                            </a>
-                        </td>
-                        <td>
-                            <div class="u-j">
-                                <span class="u-jadwal">Belum Terjadwal</span>
-                            </div>
-                        </td>
-                        <td>
-                            {{ $d->doctor_name }}
-                        </td>
-                        <td>
-                            {!! $d->classification($d->klasifikasi) !!}
-                        </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Chlorothiazide </h5>
+                      <p class="card-text">Stok : 50.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Chlorthalidone </h5>
+                      <p class="card-text">Stok : 75.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Hydrochlorothiazide/HCT </h5>
+                      <p class="card-text">Stok : 30.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Metolazone </h5>
+                      <p class="card-text">Stok : 10.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Indapamide </h5>
+                      <p class="card-text">Stok : 50.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Bumetanide </h5>
+                      <p class="card-text">Stok : 75.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Furosemide </h5>
+                      <p class="card-text">Stok : 30.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-3">
+                <div class="card card-obat">
+                    <img src="user/img/obat.jpg" class="card-img-top img-obat" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title pb-0">Triamterene </h5>
+                      <p class="card-text">Stok : 10.</p>
+                    </div>
+                  </div>
+            </div>
+
+        </div>
+
+
+
 
   </main><!-- End #main -->
 

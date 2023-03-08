@@ -54,8 +54,7 @@ class HomeController extends Controller
     }
 
     public function stock_obat(){
-        $data = DataObat::get();
-        return view('pages/stock-obat', ['data' => $data]);
+        return view('pages/stock-obat');
     }
 
     public function set_timer(){
