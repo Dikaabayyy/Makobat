@@ -18,6 +18,13 @@ class DataPasien extends Model
         return $this->belongsTo(DataJadwalObat::class, 'id', 'data_id_pasien');
     }
 
+    public function schedule($id){
+        return DB::table('schedule_pasiens')
+        ->selectRaw('*')
+        ->where('data_id_pasien', '=', $id)
+        ->get();
+    }
+
     public function obatTest($id){
         return DB::table('data_jadwal_obats')
         ->selectRaw('*')

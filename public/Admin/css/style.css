@@ -460,6 +460,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .img-obat{
     border-radius: 15px 15px 0px 0px;
+    height: 220px;
+    width: 100%;
 }
 
 .modal-input{
@@ -546,6 +548,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .pic-pasien{
     width: 50%;
+    max-width: 100%;
     height: auto;
 }
 

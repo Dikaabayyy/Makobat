@@ -43,11 +43,7 @@ class AdminController extends Controller
         return view('admin/settings');
     }
 
-    public function apoteker(){
-        return view('admin/add/apoteker');
-    }
-
-    public function dokter(){
-        return view('admin/add/dokter');
+    public function forbidden(){
+        return view('auth/forbidden');
     }
 }

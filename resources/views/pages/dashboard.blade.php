@@ -175,7 +175,7 @@
 
               <div class="card info-card customers-card">
 
-                <div class="card-body px-0">
+                <div class="card-body px-0 pb-2">
                     <h5 class="title-dash">Notifikasi Konsultasi Pasien</h5>
 
                     <div class="px-2">

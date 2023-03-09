@@ -23,7 +23,7 @@ class HomeController extends Controller
 
     public function dashboard(){
         $data = DataPasien::where('status', 0)->take(4)->get();
-        $msg = ChMessage::take(4)->get();
+        $msg = ChMessage::take(5)->get();
         $day =  Carbon::now()->isoFormat('dddd');
         $date =  Carbon::now()->isoFormat('D MMMM Y');
         return view('pages/dashboard', ['data' => $data, 'date' => $date, 'day' => $day, 'msg' => $msg]);
@@ -53,10 +53,6 @@ class HomeController extends Controller
         return Redirect::back()->with('success', 'Data Pasien berhasil ditambahkan!');
     }
 
-    public function stock_obat(){
-        return view('pages/stock-obat');
-    }
-
     public function set_timer(){
         $data = DataPasien::get();
         return view('pages/set-timer', ['data' => $data]);
@@ -73,7 +69,8 @@ class HomeController extends Controller
         $lab = DataLab::where('data_id_pasien', $id)->get();
         $obat = DataJadwalObat::where('data_id_pasien', $id)->get();
         $sch = SchedulePasien::where('data_id_pasien', $id)->get();
-        return view('pages/detail-pasien', ['data' => $data, 'obat' => $obat, 'lab' => $lab, 'sch' => $sch]);
+        $dataobat = DataObat::get();
+        return view('pages/detail-pasien', ['data' => $data, 'obat' => $obat, 'lab' => $lab, 'sch' => $sch, 'dataobat' => $dataobat]);
     }
 
     public function obat_habis(){

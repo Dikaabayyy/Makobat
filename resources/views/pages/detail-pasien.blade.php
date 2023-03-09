@@ -26,7 +26,7 @@
     @endif
 
     <div class="row row-profile">
-        <div class="col-3 mb-4">
+        <div class="col-3 mb-4" style="text-align: center">
             <img src="{{ asset('public/ImageUser/'.auth()->user()->avatar) }}" alt="Profile" class="rounded-circle pic-pasien">
         </div>
         <div class="col-9">
@@ -142,19 +142,58 @@
 
                                     <h5>
                                         Tanggal Bertemu :
-                                        @foreach ($sch as $s)
-                                        {{ $s->schedule }}
+                                        @foreach ($data as $d)
+
+
+                                        @if ($d->status == '0' )
+
+                                            <form action="/add-schedule" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="slug" value="{{ $d->slug }}">
+                                                <input type="hidden" name="status" value="1">
+                                                <div class="align-items-end mt-3">
+                                                    <input name="schedule" type="text" class="form-control int-lbl" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-int mt-3">Add Schedule</button>
+                                            </form>
+
+                                        @else
+                                            @foreach ($sch as $s)
+                                                {{ $s->schedule }}
+                                                <a href="" type="button" class="delAcc" data-bs-toggle="modal" data-bs-target="#deleteMed">Delete Data</a>
+                                            @endforeach
+                                        @endif
                                         @endforeach
                                     </h5>
 
-                                    <form action="/add-schedule" method="post" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" name="slug" value="{{ $d->slug }}">
-                                        <div class="align-items-end mt-3">
-                                            <input name="schedule" type="text" class="form-control int-lbl" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" required>
+                                    <div class="modal fade" id="deleteMed" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dellApolabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h1 class="modal-title fs-5" id="dellApolabel">Delete Account</h1>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="/delete-schedule" method="post" enctype="multipart/form-data">
+                                                @csrf
+
+                                                <input type="hidden" name="slug" value="{{ $d->slug }}">
+                                                @foreach ($sch as $s)
+                                                <input type="hidden" name="id" value="{{ $s->id }}">
+                                                @endforeach
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this Schedule?
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-danger" type="submit">Delete Schedule</button>
+                                            </form>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                          </div>
                                         </div>
-                                        <button type="submit" class="btn btn-int mt-3">Add Schedule</button>
-                                    </form>
+                                    </div>
+
+
                             </div>
                         </div>
 
@@ -330,6 +369,7 @@
                     </div>
 
                     </div>
+
                     <div class="tab-pane fade show {{ Route::currentRouteName() == 'set-timer' ? 'active' : '' }} pt-3" id="profile-time-medic">
                         <h4 class="card-htitle">Waktu Konsumsi Obat Pasien</h4>
 
@@ -401,7 +441,12 @@
                                               <div class="mb-3 row">
                                                 <label for="inputname" class="col-sm-4 col-form-label">Nama Obat</label>
                                                 <div class="align-items-end col-sm-8">
-                                                  <input type="text" name="nama_obat" class="form-control int-lbl" id="inputTextBox" required>
+                                                  <input type="text" list="nama_obat" name="nama_obat" class="form-control int-lbl" id="inputTextBox" required>
+                                                  <datalist id="nama_obat">
+                                                    @foreach ($dataobat as $do)
+                                                        <option value="{{ $do->nama_obat }}">
+                                                    @endforeach
+                                                  </datalist>
                                                 </div>
                                               </div>
 

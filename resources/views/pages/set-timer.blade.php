@@ -33,9 +33,9 @@
             <thead>
                 <tr>
                     <th scope="col" style="width: 30%">Nama</th>
-                    <th scope="col" style="width: 20%">Status</th>
+                    <th scope="col" style="width: 20%; text-align: center">Status</th>
                     <th scope="col" style="width: 20%">Dibawah Pengawasan</th>
-                    <th scope="col" style="width: 20%">Klasifikasi</th>
+                    <th scope="col" style="width: 20%; text-align: center">Klasifikasi</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,15 +46,22 @@
                                 {{ $d->name }}
                             </a>
                         </td>
-                        <td>
-                            <div class="u-j">
-                                <span class="u-jadwal">Belum Terjadwal</span>
-                            </div>
+                        <td style="text-align: center">
+                            @foreach ( $d->obatTest($d->id) as $obat )
+                                @if ($d->id == $obat->id)
+                                    Sudah Terjadwalkan
+                                @else
+                                <div class="u-j">
+                                    <span class="u-jadwal">Belum Terjadwal</span>
+                                </div>
+                                @endif
+                            @endforeach
+
                         </td>
                         <td>
                             {{ $d->doctor_name }}
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             {!! $d->classification($d->klasifikasi) !!}
                         </td>
                 </tr>

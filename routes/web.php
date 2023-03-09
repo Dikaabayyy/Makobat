@@ -28,45 +28,58 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/forbidden', [AdminController::class, 'forbidden'])->name('forbidden')->middleware('pasien');
 
-    Route::get('/set-obat', [HomeController::class, 'obat_habis'])->name('set_obat');
+    Route::middleware(['apodok'])->group(function(){
 
-    Route::get('/set-timer', [HomeController::class, 'set_timer'])->name('set-timer');
+        //Main Menu
+        Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('/keluhan-pasien', [HomeController::class, 'keluhan_pasien'])->name('keluhan-pasien');
+        Route::get('/set-obat', [HomeController::class, 'obat_habis'])->name('set_obat');
 
-    Route::get('/pasien', [HomeController::class, 'pasien'])->name('pasien');
+        Route::get('/set-timer', [HomeController::class, 'set_timer'])->name('set-timer');
 
-    Route::get('/stock-obat', [HomeController::class, 'stock_obat'])->name('stock-obat');
+        Route::get('/keluhan-pasien', [HomeController::class, 'keluhan_pasien'])->name('keluhan-pasien');
 
-    //Menu Pasien
-    Route::post('/submit', [HomeController::class, 'store_pasien'])->name('store_pasien');
+        Route::get('/pasien', [HomeController::class, 'pasien'])->name('pasien');
 
-    Route::get('/detail-pasien-{slug}', [HomeController::class, 'detail_pasien'])->name('pasien');
+        //Menu Stock Obat
+        Route::get('/stock-obat', [ObatController::class, 'stock_obat'])->name('stock-obat');
 
-    Route::get('/keluhan-pasien-{slug}', [HomeController::class, 'detail_pasien'])->name('keluhan-pasien');
+        Route::post('/add-dataobat', [ObatController::class, 'add_obat'])->name('add-obat');
 
-    Route::get('/timer-obat-pasien-{slug}', [HomeController::class, 'detail_pasien'])->name('set-timer');
+        //Menu Pasien
+        Route::post('/submit', [HomeController::class, 'store_pasien'])->name('store_pasien');
 
-    Route::post('/add-schedule', [ScheduleController::class, 'add_schedule'])->name('add-schedule');
+        Route::get('/detail-pasien-{slug}', [HomeController::class, 'detail_pasien'])->name('pasien');
 
-    Route::post('/submit-obat', [ObatController::class, 'store_obat'])->name('store-obat');
+        Route::get('/keluhan-pasien-{slug}', [HomeController::class, 'detail_pasien'])->name('keluhan-pasien');
 
-    Route::post('/submit-datalab', [LabController::class, 'store_datalab'])->name('store-datalab');
+        Route::get('/timer-obat-pasien-{slug}', [HomeController::class, 'detail_pasien'])->name('set-timer');
 
-    //Admin
-    Route::get('/all-admin', [AdminController::class, 'index'])->name('all-admin')->middleware('admin');
+        Route::post('/submit-obat', [ObatController::class, 'store_obat'])->name('store-obat');
 
-    Route::post('/store-account', [AdminController::class, 'store_account'])->name('all-admin')->middleware('admin');
+        Route::post('/submit-datalab', [LabController::class, 'store_datalab'])->name('store-datalab');
 
-    Route::get('/delete-account-{id}', [AdminController::class, 'delete_account'])->name('all-admin')->middleware('admin');
+        //Menu Schedule Pasien
+        Route::post('/add-schedule', [ScheduleController::class, 'add_schedule'])->name('add-schedule');
 
-    Route::get('/users', [AdminController::class, 'users'])->name('users')->middleware('admin');
+        Route::post('/delete-schedule', [ScheduleController::class, 'delete_schedule'])->name('delete_schedule');
+     });
 
-    Route::get('/settings', [AdminController::class, 'settings'])->name('settings')->middleware('admin');
+     Route::middleware(['admin'])->group(function(){
 
+        //Admin
+        Route::get('/all-admin', [AdminController::class, 'index'])->name('all-admin')->middleware('admin');
 
+        Route::post('/store-account', [AdminController::class, 'store_account'])->name('all-admin')->middleware('admin');
+
+        Route::get('/delete-account-{id}', [AdminController::class, 'delete_account'])->name('all-admin')->middleware('admin');
+
+        Route::get('/users', [AdminController::class, 'users'])->name('users')->middleware('admin');
+
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings')->middleware('admin');
+     });
 });
 
 

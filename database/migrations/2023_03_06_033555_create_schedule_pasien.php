@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('data_id_pasien')->constrained('data_pasiens')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('schedule');
+            $table->boolean('status')->default('0');
             $table->timestamps();
         });
     }

@@ -33,10 +33,10 @@
             <thead>
                 <tr>
                     <th scope="col" style="width: 25%">Nama</th>
-                    <th scope="col" style="width: 15%">Tanggal Check-Up</th>
-                    <th scope="col" style="width: 10%">Reminder</th>
+                    <th scope="col" style="width: 15%; text-align: center">Tanggal Check-Up</th>
+                    <th scope="col" style="width: 10%; text-align: center">Reminder</th>
                     <th scope="col" style="width: 25%">Nama Obat</th>
-                    <th scope="col" style="width: 20%">Klasifikasi</th>
+                    <th scope="col" style="width: 20%; text-align: center">Klasifikasi</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,17 +47,29 @@
                             {{ $d->name }}
                         </a>
                     </td>
-                    <td>
-                        <div class="u-j">
-                            <span class="u-jadwal">Belum Terjadwal</span>
-                        </div>
+                    <td style="text-align: center">
+                        @if ($d->status == '0')
+                            <div class="u-j">
+                                <span class="u-jadwal">Belum Terjadwal</span>
+                            </div>
+                        @else
+                            @foreach ( $d->schedule($d->id) as $s )
+                                {{ $s->schedule }}
+                            @endforeach
+                        @endif
+
                     </td>
-                    <td>
-                        <div class="u-j">
-                            <a href="/detail-pasien-{{ $d->slug }}" class="u-remind">
-                                Buat Jadwal
-                            </a>
-                        </div>
+                    <td style="text-align: center">
+                        @if ($d->status == '0')
+                            <div class="u-j">
+                                <a href="/detail-pasien-{{ $d->slug }}" class="u-remind">
+                                    Buat Jadwal
+                                </a>
+                            </div>
+                        @else
+                            Sudah Terjadwalkan
+                        @endif
+
                     </td>
                     <td>
                         @foreach ( $d->obatTest($d->id) as $obat )
@@ -66,7 +78,7 @@
                         </div>
                         @endforeach
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         {!! $d->classification($d->klasifikasi) !!}
                     </td>
                 </tr>

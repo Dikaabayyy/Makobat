@@ -41,8 +41,8 @@
             <th scope="col" style="width: 20%">Nama Obat</th>
             <th scope="col" style="width: 10%">Stock obat</th>
             <th scope="col" style="width: 15%">Pengawasan</th>
-            <th scope="col" style="width: 15%">Last Login</th>
-            <th scope="col" style="width: 20%">Klasifikasi</th>
+            <th scope="col" style="width: 15%; text-align: center">Last Login</th>
+            <th scope="col" style="width: 20%; text-align: center">Klasifikasi</th>
         </tr>
         </thead>
         <tbody>
@@ -76,10 +76,10 @@
                         {{ $d->doctor_nip }}
                     </div>
                 </td>
-                <td>
+                <td style="text-align: center">
                     {{ $d->created_at->isoformat('dddd, D MMMM Y') }}
                 </td>
-                <td>
+                <td style="text-align: center">
                     {!! $d->classification($d->klasifikasi) !!}
                 </td>
             </tr>

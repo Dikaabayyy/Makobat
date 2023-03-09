@@ -39,8 +39,8 @@
             <thead>
                 <tr>
                     <th scope="col" style="width: 40%">Nama</th>
-                    <th scope="col" style="width: 25%">Tanggal Input</th>
-                    <th scope="col" style="width: 25%">Klasifikasi</th>
+                    <th scope="col" style="width: 25%; text-align: center">Tanggal Input</th>
+                    <th scope="col" style="width: 25%; text-align: center">Klasifikasi</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,10 +51,10 @@
                                 {{ $d->name }}
                             </a>
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             {{ $d->created_at->isoformat('dddd, D MMMM Y') }}
                         </td>
-                        <td>
+                        <td style="text-align: center">
                             {!! $d->classification($d->klasifikasi) !!}
                         </td>
                 </tr>

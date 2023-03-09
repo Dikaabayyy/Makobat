@@ -7,7 +7,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Dokter
+class Pasien
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class Dokter
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && Auth::user()->role == 'Dokter') {
+        if (Auth::user() && Auth::user()->role == 'Pasien') {
             return $next($request);
        }
 
-       return redirect('/login')->with('error','You have not access');
+       return redirect('dashboard')->with('error','You have not admin access');
     }
 }

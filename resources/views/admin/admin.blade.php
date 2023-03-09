@@ -23,7 +23,7 @@
           <div class="modal-header modal-head">
             <h1 class="modal-title" id="addDataLabel">Log Laboratorium</h1>
           </div>
-          <form action="/store-account" method="post">
+          <form action="/store-account" method="post" enctype="multipart/form-data">
             @csrf
           <div class="modal-body modal-bd">
                   <div class="card-addData">
