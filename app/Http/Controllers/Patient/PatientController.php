@@ -49,6 +49,6 @@ class PatientController extends Controller
         return response()->json([
             'status' => 'Success',
             'message' => 'Logout Success'
-        ]);
+        ], 200);
     }
 }

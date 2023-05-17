@@ -17,7 +17,7 @@ use App\Http\Controllers\Patient\PatientController;
 
 Route::prefix('v1')->group(function(){
 
-    Route::post('/login', [PatientController::class, 'login']);
+    Route::post('/masuk', [PatientController::class, 'login']);
 
     Route::middleware(['auth:sanctum', 'pasien'])->group(function(){
         
