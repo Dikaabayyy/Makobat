@@ -18,6 +18,7 @@ use App\Http\Controllers\Patient\PatientController;
 Route::prefix('v1')->group(function(){
 
     Route::post('/masuk', [PatientController::class, 'login']);
+    Route::post('/send-otp', [PatientController::class, 'sendOTP']);
 
     Route::middleware(['auth:sanctum', 'pasien'])->group(function(){
         

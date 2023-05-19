@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('name');
-            $table->string('email')->unique();$table->string('phone_number')->default('-');
-            $table->text('address')->default('-');
+            $table->string('email')->unique();
+            $table->string('phone_number')->nullable()->unique();
+            $table->text('address')->nullable();
+            $table->string('otp')->nullable();
             $table->string('password')->default(Hash::make(123));
             $table->string('role')->default('Pasien');
             $table->boolean('status')->default('1');

@@ -51,4 +51,57 @@ class PatientController extends Controller
             'message' => 'Logout Success'
         ], 200);
     }
+
+    public function sendOTP(Request $request){
+        $request->validate([
+            'phone_number' => 'required'
+        ]);
+
+        $user = User::where('phone_number', $request->phone_number)->where('role', 'Pasien')->first();
+
+        if(!$user){
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $otp = rand(100000, 999999);
+
+        $user->otp = $otp;
+        // $user->save(); 
+        
+        $curl = curl_init();
+        $token = "_1LXaUBC!ZkZ9P!5wfe0";
+        $url = "https://fonnte.com/api/send_message.php";
+        // $date = Carbon::now();
+        $pesan = 'Halo, ini adalah password Baru kamu ' .$otp;
+        $curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $url,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS => array(
+'target' => $request->phone_number,
+'message' => $pesan, 
+'countryCode' => '62', //optional
+),
+  CURLOPT_HTTPHEADER => array(
+    'Authorization: '.$token //change TOKEN to your actual token
+  ),
+));
+  
+
+        return response()->json([
+            'status' => 'Success',
+            'message' => 'OTP sent',
+            'otp' => $otp
+        ], 200);
+    }
 }
