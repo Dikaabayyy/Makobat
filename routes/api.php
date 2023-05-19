@@ -19,11 +19,12 @@ Route::prefix('v1')->group(function(){
 
     Route::post('/masuk', [PatientController::class, 'login']);
     Route::post('/send-otp', [PatientController::class, 'sendOTP']);
+    Route::post('/validate-otp', [PatientController::class, 'validateOTP']);
 
     Route::middleware(['auth:sanctum', 'pasien'])->group(function(){
         
         Route::prefix('auth')->controller(PatientController::class)->group(function(){
-            Route::post('/keluar', [PatientController::class, 'keluar']);
+            Route::post('/keluar', 'keluar');
         });
 
     });
