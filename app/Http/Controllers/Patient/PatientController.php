@@ -69,13 +69,13 @@ class PatientController extends Controller
         $otp = rand(100000, 999999);
 
         $user->otp = $otp;
-        // $user->save(); 
+        $user->save(); 
         
         $curl = curl_init();
         $token = "_1LXaUBC!ZkZ9P!5wfe0";
-        $url = "https://fonnte.com/api/send_message.php";
+        $url = "https://api.fonnte.com/send";
         // $date = Carbon::now();
-        $pesan = 'Halo, ini adalah password Baru kamu ' .$otp;
+        $pesan = 'Halo, ini adalah token sekali pakai untuk memperbarui password akun kamu ' .$otp;
         $curl = curl_init();
 
 curl_setopt_array($curl, array(
@@ -90,18 +90,67 @@ curl_setopt_array($curl, array(
   CURLOPT_POSTFIELDS => array(
 'target' => $request->phone_number,
 'message' => $pesan, 
-'countryCode' => '62', //optional
 ),
   CURLOPT_HTTPHEADER => array(
-    'Authorization: '.$token //change TOKEN to your actual token
+    "Authorization: $token" //change TOKEN to your actual token
   ),
 ));
+
+    $response = curl_exec($curl);
   
 
         return response()->json([
             'status' => 'Success',
             'message' => 'OTP sent',
-            'otp' => $otp
+            'otp' => $otp,
+            'response_message' => $response
         ], 200);
     }
+
+    public function validateOTP(Request $request){
+        $request->validate([
+            'phone_number' => 'required',
+            'otp' => 'required'
+        ]);
+    
+        $user = User::where('phone_number', $request->phone_number)->where('otp', $request->otp)->first();
+    
+        if(!$user){
+            return response()->json([
+                'status' => 'Failed',
+                'message' => 'OTP yang anda masukkan salah'
+            ], 401);
+        }
+    
+        $user->otp = null;
+        $user->save();
+    
+        return response()->json([
+            'status' => 'Success',
+            'message' => 'Berhasil memasukkan OTP, silakan perbarui sandi anda',
+            'data' => $request->phone_number
+        ], 201);
+    }
+    
 }
+
+public function changePassword(Request $request){
+    $request->validate([
+        'phone_number' => 'required',
+        'new_password' => 'required'
+    ]);
+
+    $user = User::where('phone_number', $request->phone_number)->first();
+
+    if(!$user){
+        return response()->json([
+            'status' => 'Failed',
+            'message' => 'Sandi yang anda masukkan salah'
+        ], 401);
+    }
+
+    $user->password = $request->new_password
+
+
+}
+
