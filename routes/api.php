@@ -17,12 +17,16 @@ use App\Http\Controllers\Patient\PatientController;
 
 Route::prefix('v1')->group(function(){
 
-    Route::post('/masuk', [PatientController::class, 'login']);
-    Route::post('/send-otp', [PatientController::class, 'sendOTP']);
-    Route::post('/validate-otp', [PatientController::class, 'validateOTP']);
+    Route::prefix('auth')->controller(PatientController::class)->group(function(){
+        Route::post('/masuk', 'login');
+        Route::prefix('forgot-password')->group(function(){
+            Route::post('/send-otp', 'sendOTP');
+            Route::post('/validate-otp', 'validateOTP');
+            Route::post('/reset-password', 'resetPassword');
+        });
+    });
 
     Route::middleware(['auth:sanctum', 'pasien'])->group(function(){
-        
         Route::prefix('auth')->controller(PatientController::class)->group(function(){
             Route::post('/keluar', 'keluar');
         });

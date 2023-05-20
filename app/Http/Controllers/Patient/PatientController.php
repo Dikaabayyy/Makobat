@@ -78,23 +78,23 @@ class PatientController extends Controller
         $pesan = 'Halo, ini adalah token sekali pakai untuk memperbarui password akun kamu ' .$otp;
         $curl = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => $url,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => array(
-'target' => $request->phone_number,
-'message' => $pesan, 
-),
-  CURLOPT_HTTPHEADER => array(
-    "Authorization: $token" //change TOKEN to your actual token
-  ),
-));
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array(
+    'target' => $request->phone_number,
+    'message' => $pesan, 
+    ),
+    CURLOPT_HTTPHEADER => array(
+        "Authorization: $token" //change TOKEN to your actual token
+     ),
+    ));
 
     $response = curl_exec($curl);
   
@@ -132,25 +132,28 @@ curl_setopt_array($curl, array(
         ], 201);
     }
     
-}
+    public function resetPassword(Request $request){
+        $request->validate([
+            'phone_number' => 'required',
+            'new_password' => 'required'
+        ]);
 
-public function changePassword(Request $request){
-    $request->validate([
-        'phone_number' => 'required',
-        'new_password' => 'required'
-    ]);
+        $user = User::where('phone_number', $request->phone_number)->first();
 
-    $user = User::where('phone_number', $request->phone_number)->first();
+        if(!$user){
+            return response()->json([
+                'status' => 'Failed',
+                'message' => 'Anda tidak berhak untuk mengubah sandi'
+            ], 401);
+        }
 
-    if(!$user){
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
         return response()->json([
-            'status' => 'Failed',
-            'message' => 'Sandi yang anda masukkan salah'
-        ], 401);
+            'status' => 'Success',
+            'message' => 'Berhasil memperbarui sandi anda'
+        ], 201);
     }
 
-    $user->password = $request->new_password
-
-
 }
-
