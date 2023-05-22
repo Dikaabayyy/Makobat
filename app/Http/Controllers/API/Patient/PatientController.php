@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Patient;
+namespace App\Http\Controllers\API\Patient;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,6 +18,24 @@ class PatientController extends Controller
         $credentials = $request->only('username', 'password');
 
         if(!Auth::attempt($credentials)){
+           // Statement condition when user input wrong username or password or both
+            if (User::where('username', $request->username)->first() == null) {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'Username tidak ditemukan'
+                ], 401);
+            }
+
+            if (User::where('username', $request->username)->first() != null) {
+                $user = User::where('username', $request->username)->first();
+                if ($user->password != $request->password) {
+                    return response()->json([
+                        'status' => 'Error',
+                        'message' => 'Password salah'
+                    ], 401);
+                }
+            }
+
             return response()->json([
                 'status' => 'Error',
                 'message' => 'Unauthorized'
@@ -97,13 +115,14 @@ class PatientController extends Controller
     ));
 
     $response = curl_exec($curl);
+    $phone_number = $user->phone_number;
   
 
         return response()->json([
             'status' => 'Success',
             'message' => 'OTP sent',
             'otp' => $otp,
-            'response_message' => $response
+            'phone_number' => $phone_number
         ], 200);
     }
 
@@ -122,18 +141,19 @@ class PatientController extends Controller
             ], 401);
         }
     
-        $user->otp = null;
-        $user->save();
+        
     
         return response()->json([
             'status' => 'Success',
             'message' => 'Berhasil memasukkan OTP, silakan perbarui sandi anda',
-            'data' => $request->phone_number
+            'data' => $user->phone_number,
+            'otp' => $user->otp
         ], 201);
     }
     
     public function resetPassword(Request $request){
         $request->validate([
+            'otp' => 'required',
             'phone_number' => 'required',
             'new_password' => 'required'
         ]);
@@ -147,6 +167,7 @@ class PatientController extends Controller
             ], 401);
         }
 
+        $user->otp = null;
         $user->password = bcrypt($request->new_password);
         $user->save();
 
