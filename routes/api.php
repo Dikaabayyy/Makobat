@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Patient\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function(){
+
+    Route::prefix('auth')->controller(PatientController::class)->group(function(){
+        Route::post('/masuk', 'login');
+        Route::prefix('forgot-password')->group(function(){
+            Route::post('/send-otp', 'sendOTP');
+            Route::post('/validate-otp', 'validateOTP');
+            Route::post('/reset-password', 'resetPassword');
+        });
+    });
+
+    Route::middleware(['auth:sanctum', 'pasien'])->group(function(){
+        Route::prefix('auth')->controller(PatientController::class)->group(function(){
+            Route::post('/keluar', 'keluar');
+        });
+
+    });
 });
